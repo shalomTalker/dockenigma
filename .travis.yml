@@ -1,0 +1,34 @@
+
+language: generic
+sudo: required
+services:
+  - docker
+before_install:
+  - docker build -t dockenigma/multi-doce-client-test -f ./client/Dockerfile.dev ./client
+script:
+  - docker run dockenigma/multi-doce-client-test npm run test-coverage
+after_success: 
+  - docker build -t dockenigma/multi-doce-client:latest ./client
+  - docker build -t dockenigma/multi-doce-nginx:latest ./nginx
+  - docker build -t dockenigma/multi-doce-importer:latest ./importer
+  - docker build -t dockenigma/multi-doce-logger:latest ./logger
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push dockenigma/multi-doce-client:latest
+  - docker push dockenigma/multi-doce-nginx:latest
+  - docker push dockenigma/multi-doce-importer:latest
+  - docker push dockenigma/multi-doce-logger:latest
+deploy:
+  provider: elasticbeanstalk
+  region: "us-east-1"
+  app: "dockenigma"
+  env:  "Dockenigma-env-1"
+  bucket_name: "elasticbeanstalk-us-east-1-444230913747"
+  bucket_path : "multi-dockenigma"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: $AWS_SECRET_KEY
+
+
+    

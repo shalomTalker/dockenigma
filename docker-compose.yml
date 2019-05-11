@@ -1,0 +1,43 @@
+version: '3'
+services:
+  client:
+    build: 
+      dockerfile: Dockerfile.dev
+      context: ./client
+    volumes: 
+      - /app/node_modules
+      - ./client:/app
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports:
+      - '3050:80'
+  importer:
+    build: 
+      dockerfile: Dockerfile.dev
+      context: ./importer 
+    volumes: 
+      - /app/node_modules
+      - ./importer:/app
+      - ./assets:/app/assets
+    ports:
+      - "5001:5001"
+    links: 
+      - logger
+  logger:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./logger
+    volumes: 
+      - /app/node_modules
+      - ./logger:/app
+    ports:
+      - "5000:5000"
+#  curl --header "enigma-redirect-url: https://s3.eu-central-1.amazonaws.com/blogs-bucket-shalom-dev/5ca00f80b114bf6334dd6e1c/f0e3e530-613c-11e9-ac0b-9d03ee9ad7b3.jpeg" http://localhost:5000/proof
+
+
+  
+
+ 

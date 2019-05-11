@@ -1,0 +1,43 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+        {
+            "name": "client",
+            "image": "dockenigma/multi-client",
+            "hostname": "client",
+            "essential": false,
+            "memory": 128
+        },
+        {
+            "name": "importer",
+            "image": "dockenigma/multi-importer",
+            "hostname": "importer",
+            "essential": false,
+            "memory": 128
+        },
+        {
+            "name": "logger",
+            "image": "dockenigma/multi-logger",
+            "hostname": "logger",
+            "essential": false,
+            "memory": 128
+        },
+        {
+            "name": "nginx",
+            "image": "dockenigma/multi-nginx",
+            "hostname": "nginx",
+            "essential": true,
+            "portMappings": [
+                {
+                    "hostPort": 80,
+                    "containerPort": 80
+                }
+            ],
+            "links": [
+                "client",
+                "importer"
+            ],
+            "memory": 128
+        }
+    ]
+}
