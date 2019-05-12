@@ -45,7 +45,6 @@ app.get('/:serviceID', (req, res) => {
                 // make api post request to redirct-url 
             } else {
                 res.status(200).send('sync process complete');
-
             }
         })
         if (asyncFlag) {
