@@ -29,7 +29,6 @@ app.get('/:serviceID', (req, res) => {
             console.log(res)
             return res
         })
-        console.log(_refID)
         controller[serviceID]((msg) => {
             console.log(msg + " complete")
             logEvent({
