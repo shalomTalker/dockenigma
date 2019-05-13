@@ -11,7 +11,10 @@ app.use(requireResource)
 
 app.get('/:serviceID', (req, res) => {
     const S3url = req.headers['enigma-redirect-url'];
-    const asyncFlag = (req.headers['enigma-async-completion'] !== undefined);
+    const asyncFlag = (req.headers['enigma-async-completion'] !== undefined) 
+    ? req.headers['enigma-async-completion'] 
+    : false;
+
     const { serviceID } = req.params
     const organizationID = req.subdomains[0] || 'organization-id';
     const unitID = 'unit-id';
@@ -42,6 +45,7 @@ app.get('/:serviceID', (req, res) => {
             })
             if (asyncFlag) {
                 // make api post request to redirct-url 
+                console.log("making post request to redirect"+ asyncFlag)
             } else {
                 res.status(200).send('sync process complete');
             }
