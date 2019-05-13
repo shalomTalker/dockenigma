@@ -6,10 +6,10 @@ const morgan = require('morgan');
 const app = express();
 const keys = require('./config/keys')
 require('./models/Event')
-console.log(process.env.NODE_ENV)
+console.log('environment:'+ process.env.NODE_ENV)
 app.use(bodyParser.json());
 app.use(morgan('dev'));
-mongoose.connect(keys.mongoUri, { useNewUrlParser: true })
+mongoose.connect(keys.mongoURI, { useNewUrlParser: true })
     .then(({ connections }) => console.log(
         "name: "+connections[0].name,
         "host: "+connections[0].host,
